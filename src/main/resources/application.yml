@@ -1,0 +1,76 @@
+# ===============================================
+#  Arquivo: application.yml
+#  Projeto: Alfabetiza+
+#  Função: Configurações principais do backend
+# ===============================================
+
+spring:
+  application:
+    name: alfabetiza-plus-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/alfabetizaplus
+    username: alfplus
+    password: alfpass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none   # Flyway gerencia o esquema, não o Hibernate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: 8080
+
+# ===============================================
+# Perfil de Desenvolvimento
+# ===============================================
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/alfabetizaplus_dev
+    username: alfplus
+    password: alfpass
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# ===============================================
+# Perfil de Produção
+# ===============================================
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:db}:${DB_PORT:5432}/${DB_NAME:alfabetizaplus}
+    username: ${DB_USER:alfplus}
+    password: ${DB_PASS:alfpass}
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+server:
+  port: ${PORT:8080}
+
+logging:
+  level:
+    root: WARN
