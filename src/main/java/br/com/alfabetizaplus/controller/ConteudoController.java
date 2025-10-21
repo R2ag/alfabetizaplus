@@ -1,6 +1,8 @@
 package br.com.alfabetizaplus.controller;
 
+import br.com.alfabetizaplus.dto.UnidadeDTO;
 import br.com.alfabetizaplus.entity.*;
+import br.com.alfabetizaplus.mapper.UnidadeMapper;
 import br.com.alfabetizaplus.service.ConteudoService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -10,16 +12,23 @@ import java.util.List;
 public class ConteudoController {
 
     private final ConteudoService conteudoService;
+    private final UnidadeMapper unidadeMapper;
 
-    public ConteudoController(ConteudoService conteudoService) {
+    public ConteudoController(ConteudoService conteudoService, UnidadeMapper unidadeMapper) {
         this.conteudoService = conteudoService;
+        this.unidadeMapper = unidadeMapper;
     }
 
     @GetMapping("/unidades")
-    public List<Unidade> listarUnidades() {
-        return conteudoService.listarUnidades();
+    public List<UnidadeDTO> listarUnidades() {
+        return conteudoService.listarUnidades()
+                .stream()
+                .map(unidadeMapper::toDTO)
+                .toList();
     }
-
+/*TO DO
+    Finalizar a implementação dos DTOs e Mappers
+ */
     @GetMapping("/unidades/{idUnidade}/aulas")
     public List<Aula> listarAulas(@PathVariable Long idUnidade) {
         return conteudoService.listarAulasPorUnidade(idUnidade);
