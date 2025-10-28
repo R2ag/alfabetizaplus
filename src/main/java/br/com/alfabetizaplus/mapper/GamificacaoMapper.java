@@ -7,6 +7,5 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface GamificacaoMapper {
-    GamificacaoMapper INSTANCE = Mappers.getMapper(GamificacaoMapper.class);
     GamificacaoDTO toDTO(Gamificacao gamificacao);
 }

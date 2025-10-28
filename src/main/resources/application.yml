@@ -1,7 +1,7 @@
 # ===============================================
 #  Arquivo: application.yml
 #  Projeto: Alfabetiza+
-#  Função: Configurações principais do backend
+#  Funï¿½ï¿½o: Configuraï¿½ï¿½es principais do backend
 # ===============================================
 
 spring:
@@ -9,14 +9,14 @@ spring:
     name: alfabetiza-plus-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/alfabetizaplus
-    username: alfplus
-    password: alfpass
+    url: jdbc:postgresql://191.253.23.111:5432/AlfabetizaDev
+    username: postgres
+    password: postgres
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: none   # Flyway gerencia o esquema, não o Hibernate
+      ddl-auto: none   # Flyway gerencia o esquema, nï¿½o o Hibernate
     show-sql: true
     properties:
       hibernate:
@@ -30,47 +30,54 @@ spring:
 server:
   port: 8080
 
-# ===============================================
-# Perfil de Desenvolvimento
-# ===============================================
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-
-  datasource:
-    url: jdbc:postgresql://localhost:5432/alfabetizaplus_dev
-    username: alfplus
-    password: alfpass
-
 logging:
   level:
     root: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
+
 # ===============================================
-# Perfil de Produção
+# Perfil de Desenvolvimento
 # ===============================================
 ---
-spring:
-  config:
-    activate:
-      on-profile: prod
+#spring:
+#  config:
+#    activate:
+#      on-profile: dev
 
-  datasource:
-    url: jdbc:postgresql://${DB_HOST:db}:${DB_PORT:5432}/${DB_NAME:alfabetizaplus}
-    username: ${DB_USER:alfplus}
-    password: ${DB_PASS:alfpass}
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/alfabetizaplus_dev
+#    username: alfplus
+#    password: alfpass
 
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
+#logging:
+#  level:
+#    root: INFO
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-server:
-  port: ${PORT:8080}
+# ===============================================
+# Perfil de Produï¿½ï¿½o
+# ===============================================
+---
+#spring:
+#  config:
+#    activate:
+#      on-profile: prod
 
-logging:
-  level:
-    root: WARN
+#  datasource:
+#    url: jdbc:postgresql://${DB_HOST:db}:${DB_PORT:5432}/${DB_NAME:alfabetizaplus}
+#    username: ${DB_USER:alfplus}
+#    password: ${DB_PASS:alfpass}
+
+#  flyway:
+#    enabled: true
+#    baseline-on-migrate: true
+
+#server:
+#  port: ${PORT:8080}
+
+#logging:
+#  level:
+#    root: WARN

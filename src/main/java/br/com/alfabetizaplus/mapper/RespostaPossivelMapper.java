@@ -7,6 +7,5 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface RespostaPossivelMapper {
-    RespostaPossivelMapper INSTANCE = Mappers.getMapper(RespostaPossivelMapper.class);
     RespostaPossivelDTO toDTO(RespostaPossivel resposta);
 }

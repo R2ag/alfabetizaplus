@@ -7,6 +7,5 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring", uses = {PraticaMapper.class})
 public interface AtividadeMapper {
-    AtividadeMapper INSTANCE = Mappers.getMapper(AtividadeMapper.class);
     AtividadeDTO toDTO(Atividade atividade);
 }
