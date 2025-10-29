@@ -1,4 +1,4 @@
-/src/main/resources/serviceAccountKey.json
+/src/main/resources/firebase/serviceAccountKey.json
 /target/
 /db_data/
 .env

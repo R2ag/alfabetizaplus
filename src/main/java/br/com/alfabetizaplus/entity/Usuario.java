@@ -15,6 +15,9 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long id;
 
+    @Column(unique = true)
+    private String firebaseUid;
+
     @Column(nullable = false, length = 100)
     private String nome;
 
