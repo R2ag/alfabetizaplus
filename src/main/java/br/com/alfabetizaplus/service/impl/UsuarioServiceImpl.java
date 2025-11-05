@@ -31,6 +31,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public Usuario loadOrCreateByGoogleUid(String googleUid, String email, String nome) {
         return usuarioRepository.findByGoogleUid(googleUid)
+                .or(() -> Optional.ofNullable(email)
+                        .flatMap(valorEmail -> usuarioRepository.findByEmail(valorEmail)
+                                .map(usuarioExistente -> {
+                                    usuarioExistente.setGoogleUid(googleUid);
+
+                                    if (nome != null && !nome.isBlank()) {
+                                        usuarioExistente.setNome(nome);
+                                    }
+
+                                    return usuarioRepository.save(usuarioExistente);
+                                })))
                 .orElseGet(() -> {
                     Usuario novo = new Usuario();
                     novo.setGoogleUid(googleUid);
