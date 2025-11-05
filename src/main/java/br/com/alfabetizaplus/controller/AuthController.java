@@ -1,7 +1,7 @@
 package br.com.alfabetizaplus.controller;
 
 import br.com.alfabetizaplus.entity.Usuario;
-import br.com.alfabetizaplus.repository.UsuarioRepository;
+import br.com.alfabetizaplus.service.UsuarioService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +13,10 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
-    public AuthController(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public AuthController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
     @PostMapping("/register")
@@ -24,14 +24,11 @@ public class AuthController {
         String token = authHeader.replace("Bearer ", "");
         FirebaseToken decoded = FirebaseAuth.getInstance().verifyIdToken(token);
 
-        Usuario usuario = usuarioRepository.findByGoogleUid(decoded.getUid())
-                .orElseGet(() -> {
-                    Usuario novo = new Usuario();
-                    novo.setGoogleUid(decoded.getUid());
-                    novo.setNome(decoded.getName());
-                    novo.setEmail(decoded.getEmail());
-                    return usuarioRepository.save(novo);
-                });
+        Usuario usuario = usuarioService.loadOrCreateByGoogleUid(
+                decoded.getUid(),
+                decoded.getEmail(),
+                decoded.getName()
+        );
 
         Map<String, Object> response = new HashMap<>();
         response.put("id", usuario.getId());
@@ -45,7 +42,7 @@ public class AuthController {
         String token = authHeader.replace("Bearer ", "");
         FirebaseToken decoded = FirebaseAuth.getInstance().verifyIdToken(token);
 
-        Usuario usuario = usuarioRepository.findByGoogleUid(decoded.getUid())
+        Usuario usuario = usuarioService.findByGoogleUid(decoded.getUid())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
         Map<String, Object> response = new HashMap<>();
