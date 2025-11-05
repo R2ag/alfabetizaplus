@@ -16,9 +16,7 @@ public class GamificacaoController {
         this.gamificacaoService = gamificacaoService;
     }
 
-    /*TO DO
-    Finalizar a implementação dos DTOs e Mappers
-    */
+
     @GetMapping("/me")
     public Gamificacao getStatus(Authentication authentication) {
         Usuario usuario = (Usuario) authentication.getPrincipal();
