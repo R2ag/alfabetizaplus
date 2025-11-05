@@ -17,6 +17,7 @@ public class Gamificacao {
 
     @OneToOne
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
+    @ToString.Exclude
     private Usuario usuario;
 
     private Integer moedas = 0;

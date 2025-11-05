@@ -6,7 +6,6 @@
 
 CREATE TABLE usuario (
                          id_usuario BIGSERIAL PRIMARY KEY,
-                         firebase_uid VARCHAR(255) UNIQUE,
                          nome VARCHAR(100) NOT NULL,
                          email VARCHAR(150) NOT NULL UNIQUE,
                          google_uid VARCHAR(255) UNIQUE,
