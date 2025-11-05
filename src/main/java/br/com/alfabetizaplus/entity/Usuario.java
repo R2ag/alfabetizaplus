@@ -15,16 +15,13 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long id;
 
-    @Column(unique = true)
-    private String firebaseUid;
-
     @Column(nullable = false, length = 100)
     private String nome;
 
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(name = "google_uid", unique = true, length = 255)
+    @Column(name = "google_uid", unique = true, nullable = false, length = 255)
     private String googleUid;
 
     @Column(name = "data_criacao")
