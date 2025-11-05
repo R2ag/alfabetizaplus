@@ -24,10 +24,10 @@ public class AuthController {
         String token = authHeader.replace("Bearer ", "");
         FirebaseToken decoded = FirebaseAuth.getInstance().verifyIdToken(token);
 
-        Usuario usuario = usuarioRepository.findByFirebaseUid(decoded.getUid())
+        Usuario usuario = usuarioRepository.findByGoogleUid(decoded.getUid())
                 .orElseGet(() -> {
                     Usuario novo = new Usuario();
-                    novo.setFirebaseUid(decoded.getUid());
+                    novo.setGoogleUid(decoded.getUid());
                     novo.setNome(decoded.getName());
                     novo.setEmail(decoded.getEmail());
                     return usuarioRepository.save(novo);
@@ -45,7 +45,7 @@ public class AuthController {
         String token = authHeader.replace("Bearer ", "");
         FirebaseToken decoded = FirebaseAuth.getInstance().verifyIdToken(token);
 
-        Usuario usuario = usuarioRepository.findByFirebaseUid(decoded.getUid())
+        Usuario usuario = usuarioRepository.findByGoogleUid(decoded.getUid())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
         Map<String, Object> response = new HashMap<>();
