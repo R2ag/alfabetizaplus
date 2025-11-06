@@ -30,31 +30,43 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public Usuario loadOrCreateByGoogleUid(String googleUid, String email, String nome) {
-        return usuarioRepository.findByGoogleUid(googleUid)
-                .or(() -> Optional.ofNullable(email)
-                        .flatMap(valorEmail -> usuarioRepository.findByEmail(valorEmail)
-                                .map(usuarioExistente -> {
-                                    usuarioExistente.setGoogleUid(googleUid);
 
-                                    if (nome != null && !nome.isBlank()) {
-                                        usuarioExistente.setNome(nome);
-                                    }
+        Optional<Usuario> existentePorUid = usuarioRepository.findByGoogleUid(googleUid);
+        if (existentePorUid.isPresent()) {
+            return existentePorUid.get();
+        }
 
-                                    return usuarioRepository.save(usuarioExistente);
-                                })))
-                .orElseGet(() -> {
-                    Usuario novo = new Usuario();
-                    novo.setGoogleUid(googleUid);
-                    novo.setEmail(email);
-                    novo.setNome(nome);
-                    Usuario salvo = usuarioRepository.save(novo);
+        // 2️⃣ Procura pelo e-mail
+        Optional<Usuario> existentePorEmail = usuarioRepository.findByEmail(email);
+        if (existentePorEmail.isPresent()) {
+            Usuario usuario = existentePorEmail.get();
 
-                    // cria registro de gamificação padrão
-                    Gamificacao gam = new Gamificacao();
-                    gam.setUsuario(salvo);
-                    gamificacaoRepository.save(gam);
+            // Atualiza o UID, se necessário
+            if (usuario.getGoogleUid() == null || !usuario.getGoogleUid().equals(googleUid)) {
+                usuario.setGoogleUid(googleUid);
+            }
 
-                    return salvo;
-                });
+            // Atualiza nome, se estiver em branco
+            if (nome != null && !nome.isBlank() && !nome.equals(usuario.getNome())) {
+                usuario.setNome(nome);
+            }
+
+            return usuarioRepository.save(usuario);
+        }
+
+        // 3️⃣ Cria novo usuário se não encontrou por UID nem por e-mail
+        Usuario novo = new Usuario();
+        novo.setGoogleUid(googleUid);
+        novo.setEmail(email);
+        novo.setNome(nome);
+        Usuario salvo = usuarioRepository.save(novo);
+
+        // Cria registro de gamificação padrão
+        Gamificacao gam = new Gamificacao();
+        gam.setUsuario(salvo);
+        gamificacaoRepository.save(gam);
+
+        return salvo;
     }
+
 }
