@@ -8,5 +8,6 @@ public class UnidadeDTO {
     private Long id;
     private String nome;
     private String descricao;
+    private String imagemUrl;
     private List<AulaDTO> aulas;
 }

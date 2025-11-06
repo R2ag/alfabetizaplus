@@ -8,4 +8,5 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring", uses = {AulaMapper.class})
 public interface UnidadeMapper {
     UnidadeDTO toDTO(Unidade unidade);
+    Unidade toEntity(UnidadeDTO dto);
 }

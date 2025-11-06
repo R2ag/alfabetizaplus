@@ -22,6 +22,9 @@ public class Unidade {
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
+    @Column(name = "imagem_url", length = 500)
+    private String imagemUrl;
+
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Aula> aulas;
 }
