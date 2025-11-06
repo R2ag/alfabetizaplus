@@ -5,6 +5,7 @@ import br.com.alfabetizaplus.entity.Gamificacao;
 import br.com.alfabetizaplus.repository.UsuarioRepository;
 import br.com.alfabetizaplus.repository.GamificacaoRepository;
 import br.com.alfabetizaplus.service.UsuarioService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,14 +60,22 @@ public class UsuarioServiceImpl implements UsuarioService {
         novo.setGoogleUid(googleUid);
         novo.setEmail(email);
         novo.setNome(nome);
-        Usuario salvo = usuarioRepository.save(novo);
 
-        // Cria registro de gamificação padrão
-        Gamificacao gam = new Gamificacao();
-        gam.setUsuario(salvo);
-        gamificacaoRepository.save(gam);
+        try {
+            Usuario salvo = usuarioRepository.save(novo);
 
-        return salvo;
+            // Cria registro de gamificação vinculado ao novo usuário
+            Gamificacao gamificacao = new Gamificacao();
+            gamificacao.setUsuario(salvo);
+            gamificacaoRepository.save(gamificacao);
+
+            return salvo;
+
+        } catch (DataIntegrityViolationException ex) {
+            // Outro processo pode ter criado o mesmo usuário simultaneamente
+            return usuarioRepository.findByEmail(email)
+                    .orElseThrow(() -> ex);
+        }
     }
 
 }
