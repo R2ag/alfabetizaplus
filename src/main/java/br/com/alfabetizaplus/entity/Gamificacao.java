@@ -1,5 +1,6 @@
 package br.com.alfabetizaplus.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +22,7 @@ public class Gamificacao {
 
     @OneToOne
     @JoinColumn(name = "id_usuario", nullable = false, unique = true)
-    @JsonManagedReference
+    @JsonBackReference
     @ToString.Exclude
     private Usuario usuario;
 
