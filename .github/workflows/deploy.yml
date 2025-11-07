@@ -22,6 +22,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}         
           script: |
             cd /opt/alfabetiza/app/alfabetizaplus
+            export GIT_SSH_COMMAND="ssh -i /home/deploy/.ssh/github"
             git pull
 
             cd /opt/alfabetiza
