@@ -36,6 +36,5 @@ public class Usuario {
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonManagedReference
-    @ToString.Exclude
     private Gamificacao gamificacao;
 }
