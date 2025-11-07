@@ -18,7 +18,7 @@ public class GamificacaoServiceImpl implements GamificacaoService {
 
     @Override
     public Gamificacao obterGamificacaoPorUsuario(Usuario usuario) {
-        return gamificacaoRepository.findByUsuario(usuario.getId())
+        return gamificacaoRepository.findByUsuario(usuario)
                 .orElseThrow(() -> new RuntimeException("Gamificação não encontrada para o usuário."));
     }
 
