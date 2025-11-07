@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}         
           script: |
-            cd /opt/alfabetiza/app
+            cd /opt/alfabetiza/app/alfabetizaplus
             git pull
 
             cd /opt/alfabetiza
