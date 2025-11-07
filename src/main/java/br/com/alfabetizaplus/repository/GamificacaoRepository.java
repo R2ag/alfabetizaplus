@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface GamificacaoRepository extends JpaRepository<Gamificacao, Long> {
-    Optional<Gamificacao> findByUsuario(Usuario usuario);
+    Optional<Gamificacao> findByUsuario(Long usuarioId);
 }
