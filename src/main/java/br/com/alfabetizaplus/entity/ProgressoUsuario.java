@@ -9,6 +9,7 @@ import java.time.OffsetDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProgressoUsuario {
 
     @Id
@@ -20,12 +21,23 @@ public class ProgressoUsuario {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_unidade")
+    private Unidade unidade;
+
     @ManyToOne
     @JoinColumn(name = "id_aula", nullable = false)
     private Aula aula;
 
-    private Boolean concluida = false;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_atividade")
+    private Atividade atividade;
+
+    private boolean concluida = false;
 
     @Column(name = "data_conclusao")
     private OffsetDateTime dataConclusao;
+
+    @Column(name = "percentual_conclusao", nullable = false)
+    private Double percentualConclusao = 0.0;
 }

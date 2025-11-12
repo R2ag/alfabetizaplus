@@ -6,6 +6,7 @@ import br.com.alfabetizaplus.entity.*;
 import br.com.alfabetizaplus.mapper.AulaMapper;
 import br.com.alfabetizaplus.mapper.UnidadeMapper;
 import br.com.alfabetizaplus.service.ConteudoService;
+import br.com.alfabetizaplus.service.UsuarioService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,23 +17,22 @@ public class ConteudoController {
     private final ConteudoService conteudoService;
     private final UnidadeMapper unidadeMapper;
     private final AulaMapper aulaMapper;
+    private final UsuarioService usuarioService;
 
-    public ConteudoController(ConteudoService conteudoService, UnidadeMapper unidadeMapper, AulaMapper aulaMapper) {
+    public ConteudoController(ConteudoService conteudoService, UnidadeMapper unidadeMapper, AulaMapper aulaMapper, UsuarioService usuarioService) {
         this.conteudoService = conteudoService;
         this.unidadeMapper = unidadeMapper;
         this.aulaMapper = aulaMapper;
+        this.usuarioService = usuarioService;
     }
 
     @GetMapping("/unidades")
-    public List<UnidadeDTO> listarUnidades() {
-        return conteudoService.listarUnidades()
-                .stream()
-                .map(unidadeMapper::toDTO)
-                .toList();
+    public List<UnidadeDTO> listarUnidades(@RequestParam String googleUid) {
+        Usuario usuario = usuarioService.findByGoogleUid(googleUid)
+                .orElseThrow(() -> new RuntimeException("Usuário Não encontrado"));
+        return conteudoService.listarUnidades(usuario);
     }
-/*TO DO
-    Finalizar a implementação dos DTOs e Mappers
- */
+
     @GetMapping("/unidades/{idUnidade}/aulas")
     public List<AulaDTO> listarAulas(@PathVariable Long idUnidade) {
         return conteudoService.listarAulasPorUnidade(idUnidade)
