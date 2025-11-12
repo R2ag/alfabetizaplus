@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DiffGenerationConfig">
+    <option name="snapshotDb" value="false" />
+    <option name="snapshotModelValue" value="alfabetizaplus:alfabetizaplus" />
     <option name="sourceModelValue" value="alfabetizaplus:alfabetizaplus" />
     <option name="targetDbValue" value="e7c71aac-1e48-462b-9579-61954037e627" />
   </component>
