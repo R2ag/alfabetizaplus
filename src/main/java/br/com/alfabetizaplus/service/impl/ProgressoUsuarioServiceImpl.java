@@ -2,6 +2,7 @@ package br.com.alfabetizaplus.service.impl;
 
 import br.com.alfabetizaplus.entity.*;
 import br.com.alfabetizaplus.repository.*;
+import br.com.alfabetizaplus.service.ConquistaService;
 import br.com.alfabetizaplus.service.ProgressoUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class ProgressoUsuarioServiceImpl implements ProgressoUsuarioService {
     private final ProgressoUsuarioRepository repository;
     private final AulaRepository aulaRepository;
     private final UnidadeRepository unidadeRepository;
+    private final ConquistaService conquistaService;
 
     @Transactional
     public void marcarAtividadeConcluida(Usuario usuario, Atividade atividade) {
@@ -58,6 +60,7 @@ public class ProgressoUsuarioServiceImpl implements ProgressoUsuarioService {
             repository.save(progressoAula);
 
             verificarConclusaoUnidade(usuario, aula.getUnidade());
+            conquistaService.verificarDesbloqueiosPorConclusaoDeAula(usuario, aula);
         }
     }
 
