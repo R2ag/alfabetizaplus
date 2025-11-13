@@ -1,5 +1,6 @@
 package br.com.alfabetizaplus.service.impl;
 
+import br.com.alfabetizaplus.dto.UsuarioDTO;
 import br.com.alfabetizaplus.entity.Usuario;
 import br.com.alfabetizaplus.entity.Gamificacao;
 import br.com.alfabetizaplus.repository.UsuarioRepository;
@@ -24,13 +25,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Optional<Usuario> findByGoogleUid(String googleUid) {
-        return usuarioRepository.findByGoogleUid(googleUid);
+    public Optional<UsuarioDTO> findByGoogleUid(String googleUid) {
+        Optional<Usuario> usuario =  usuarioRepository.findByGoogleUid(googleUid);
+
+
+
     }
 
     @Override
     @Transactional
-    public Usuario loadOrCreateByGoogleUid(String googleUid, String email, String nome) {
+    public UsuarioDTO loadOrCreateByGoogleUid(String googleUid, String email, String nome) {
 
         Optional<Usuario> existentePorUid = usuarioRepository.findByGoogleUid(googleUid);
         if (existentePorUid.isPresent()) {
