@@ -1,7 +1,7 @@
 package br.com.alfabetizaplus.controller;
 
 import br.com.alfabetizaplus.dto.*;
-import br.com.alfabetizaplus.entity.Usuario;
+import br.com.alfabetizaplus.mapper.UsuarioMapper;
 import br.com.alfabetizaplus.service.ConteudoService;
 import br.com.alfabetizaplus.service.UsuarioService;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +13,19 @@ public class ConteudoController {
 
     private final ConteudoService conteudoService;
     private final UsuarioService usuarioService;
+    private final UsuarioMapper usuarioMapper;
 
-    public ConteudoController(ConteudoService conteudoService, UsuarioService usuarioService) {
+    public ConteudoController(ConteudoService conteudoService, UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
         this.conteudoService = conteudoService;
         this.usuarioService = usuarioService;
+        this.usuarioMapper = usuarioMapper;
     }
 
     @GetMapping("/unidades")
     public List<UnidadeDTO> listarUnidades(@RequestParam String googleUid) {
-        Usuario usuario = usuarioService.findByGoogleUid(googleUid)
+        UsuarioDTO usuarioDTO = usuarioService.findByGoogleUid(googleUid)
                 .orElseThrow(() -> new RuntimeException("Usuário Não encontrado"));
-        return conteudoService.listarUnidades(usuario);
+        return conteudoService.listarUnidades(usuarioMapper.toEntity(usuarioDTO));
     }
 
     @GetMapping("/unidades/{idUnidade}/aulas")

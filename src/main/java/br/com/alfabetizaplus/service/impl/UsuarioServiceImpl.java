@@ -3,6 +3,7 @@ package br.com.alfabetizaplus.service.impl;
 import br.com.alfabetizaplus.dto.UsuarioDTO;
 import br.com.alfabetizaplus.entity.Usuario;
 import br.com.alfabetizaplus.entity.Gamificacao;
+import br.com.alfabetizaplus.mapper.UsuarioMapper;
 import br.com.alfabetizaplus.repository.UsuarioRepository;
 import br.com.alfabetizaplus.repository.GamificacaoRepository;
 import br.com.alfabetizaplus.service.UsuarioService;
@@ -17,19 +18,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final GamificacaoRepository gamificacaoRepository;
+    private final UsuarioMapper usuarioMapper;
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
-                              GamificacaoRepository gamificacaoRepository) {
+                              GamificacaoRepository gamificacaoRepository, UsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuarioRepository;
         this.gamificacaoRepository = gamificacaoRepository;
+        this.usuarioMapper = usuarioMapper;
     }
 
     @Override
     public Optional<UsuarioDTO> findByGoogleUid(String googleUid) {
-        Optional<Usuario> usuario =  usuarioRepository.findByGoogleUid(googleUid);
-
-
-
+        return usuarioRepository.findByGoogleUid(googleUid)
+                .map(usuarioMapper::toDTO);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Optional<Usuario> existentePorUid = usuarioRepository.findByGoogleUid(googleUid);
         if (existentePorUid.isPresent()) {
-            return existentePorUid.get();
+            return usuarioMapper.toDTO(existentePorUid.get());
         }
 
         // 2️⃣ Procura pelo e-mail
@@ -56,7 +57,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                 usuario.setNome(nome);
             }
 
-            return usuarioRepository.save(usuario);
+            Usuario atualizado = usuarioRepository.save(usuario);
+            return usuarioMapper.toDTO(atualizado);
         }
 
         // 3️⃣ Cria novo usuário se não encontrou por UID nem por e-mail
@@ -73,11 +75,12 @@ public class UsuarioServiceImpl implements UsuarioService {
             gamificacao.setUsuario(salvo);
             gamificacaoRepository.save(gamificacao);
 
-            return salvo;
+            return usuarioMapper.toDTO(salvo);
 
         } catch (DataIntegrityViolationException ex) {
             // Outro processo pode ter criado o mesmo usuário simultaneamente
             return usuarioRepository.findByEmail(email)
+                    .map(usuarioMapper::toDTO)
                     .orElseThrow(() -> ex);
         }
     }
