@@ -1,0 +1,395 @@
+openapi: 3.0.0
+info:
+  title: AlfabetizaPlus API
+  version: "1.0.0"
+  description: >-
+    Contrato da API AlfabetizaPlus com resumo dos recursos, modelos e rotas.
+servers:
+  - url: https://{host}/api
+    variables:
+      host:
+        default: api.alfabetizaplus.local
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    AuthHeader:
+      name: Authorization
+      in: header
+      required: true
+      description: Token JWT (Firebase ID Token)
+      schema:
+        type: string
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        email:
+          type: string
+          format: email
+        googleUid:
+          type: string
+        dataCriacao:
+          type: string
+          format: date-time
+        gamificacao:
+          $ref: '#/components/schemas/Gamificacao'
+      required:
+        - id
+        - nome
+        - email
+        - googleUid
+        - dataCriacao
+    UnidadeDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        imagemUrl:
+          type: string
+          format: uri
+        progressoUsuario:
+          $ref: '#/components/schemas/ProgressoUsuario'
+    ProgressoUsuario:
+      type: object
+      properties:
+        percentualConclusao:
+          type: number
+          format: float
+        completou:
+          type: boolean
+    AulaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+    Atividade:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        praticas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pratica'
+    Pratica:
+      type: object
+      properties:
+        id:
+          type: integer
+        descricao:
+          type: string
+        imagem:
+          type: string
+          format: uri
+        respostasPossiveis:
+          type: array
+          items:
+            $ref: '#/components/schemas/RespostaPossivel'
+    RespostaPossivel:
+      type: object
+      properties:
+        id:
+          type: integer
+        descricao:
+          type: string
+        imagem:
+          type: string
+          format: uri
+        correta:
+          type: boolean
+    Gamificacao:
+      type: object
+      properties:
+        moedas:
+          type: integer
+        chaves:
+          type: integer
+        vidas:
+          type: integer
+    GamificacaoDTO:
+      allOf:
+        - $ref: '#/components/schemas/Gamificacao'
+    ConquistaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        descricao:
+          type: string
+        iconeUrl:
+          type: string
+          format: uri
+        conquistada:
+          type: boolean
+    MensagemGamificacao:
+      type: object
+      properties:
+        mensagem:
+          type: string
+        gamificacao:
+          $ref: '#/components/schemas/GamificacaoDTO'
+paths:
+  /auth/register:
+    post:
+      summary: Registrar usuário via token Firebase
+      tags:
+        - Autenticação
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      responses:
+        '200':
+          description: Usuário registrado ou carregado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+  /auth/me:
+    get:
+      summary: Buscar usuário autenticado
+      tags:
+        - Autenticação
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      responses:
+        '200':
+          description: Dados básicos do usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+  /usuarios/me:
+    get:
+      summary: Obter usuário logado com gamificação
+      tags:
+        - Usuários
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      responses:
+        '200':
+          description: Usuário autenticado completo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '401':
+          description: Token ausente ou inválido
+  /unidades:
+    get:
+      summary: Listar unidades com progresso
+      tags:
+        - Conteúdo pedagógico
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: googleUid
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de unidades
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnidadeDTO'
+  /unidades/{idUnidade}/aulas:
+    get:
+      summary: Listar aulas de uma unidade
+      tags:
+        - Conteúdo pedagógico
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: idUnidade
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Aulas da unidade
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AulaDTO'
+  /aulas/{idAula}/atividades:
+    get:
+      summary: Listar atividades de uma aula
+      tags:
+        - Conteúdo pedagógico
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: idAula
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Atividades disponíveis
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Atividade'
+  /atividades/{idAtividade}/praticas:
+    get:
+      summary: Listar práticas de uma atividade
+      tags:
+        - Conteúdo pedagógico
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: idAtividade
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Práticas da atividade
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pratica'
+  /praticas/{idPratica}:
+    get:
+      summary: Buscar detalhes de uma prática
+      tags:
+        - Conteúdo pedagógico
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: idPratica
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalhes da prática
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pratica'
+  /conquistas:
+    get:
+      summary: Listar conquistas do usuário
+      tags:
+        - Conquistas
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: googleUid
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de conquistas com status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConquistaDTO'
+  /gamificacao/me:
+    get:
+      summary: Obter gamificação do usuário autenticado
+      tags:
+        - Gamificação
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      responses:
+        '200':
+          description: Estado gamificado atual
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamificacaoDTO'
+  /gamificacao/add-moedas/{quantidade}:
+    post:
+      summary: Adicionar moedas ao usuário autenticado
+      tags:
+        - Gamificação
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: quantidade
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Gamificação atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamificacaoDTO'
+  /gamificacao/perder-vida:
+    post:
+      summary: Remover uma vida do usuário autenticado
+      tags:
+        - Gamificação
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      responses:
+        '200':
+          description: Resultado da operação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamificacaoDTO'
+  /respostas/{idPratica}/responder:
+    post:
+      summary: Responder prática com gamificação
+      tags:
+        - Respostas
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: idPratica
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: idResposta
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Mensagem e gamificação atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemGamificacao'
