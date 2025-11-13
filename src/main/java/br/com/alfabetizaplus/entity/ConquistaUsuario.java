@@ -6,7 +6,10 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "conquista_usuario")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -19,10 +22,12 @@ public class ConquistaUsuario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
+    @ToString.Exclude
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_conquista", nullable = false)
+    @ToString.Exclude
     private Conquista conquista;
 
     @Column(name = "data_conquista", nullable = false)

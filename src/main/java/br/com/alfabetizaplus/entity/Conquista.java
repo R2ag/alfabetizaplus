@@ -6,7 +6,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "conquista")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -30,7 +33,7 @@ public class Conquista {
     private Integer recompensaMoedas = 0;
 
     /**
-     * Lista de aulas que o usuário precisa concluir para desbloquear esta conquista.
+     * Lista de aulas que o utilizador precisa concluir para desbloquear esta conquista.
      */
     @ManyToMany
     @JoinTable(
@@ -38,6 +41,7 @@ public class Conquista {
             joinColumns = @JoinColumn(name = "id_conquista"),
             inverseJoinColumns = @JoinColumn(name = "id_aula")
     )
+    @ToString.Exclude
     private List<Aula> aulasNecessarias;
 
 }

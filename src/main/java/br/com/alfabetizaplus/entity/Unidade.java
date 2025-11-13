@@ -6,7 +6,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "unidade")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 public class Unidade {
@@ -26,5 +29,6 @@ public class Unidade {
     private String imagemUrl;
 
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Aula> aulas;
 }

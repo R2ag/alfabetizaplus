@@ -5,7 +5,10 @@ import lombok.*;
 
 @Entity
 @Table(name = "resposta_possivel")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 public class RespostaPossivel {
@@ -19,7 +22,7 @@ public class RespostaPossivel {
     @JoinColumn(name = "id_pratica", nullable = false)
     private Pratica pratica;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String descricao;
 
     private String imagem;

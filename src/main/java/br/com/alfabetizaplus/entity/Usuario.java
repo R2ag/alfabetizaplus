@@ -27,7 +27,7 @@ public class Usuario {
     @ToString.Include
     private String email;
 
-    @Column(name = "google_uid", unique = true, nullable = false, length = 255)
+    @Column(name = "google_uid", unique = true, nullable = false)
     @ToString.Include
     private String googleUid;
 

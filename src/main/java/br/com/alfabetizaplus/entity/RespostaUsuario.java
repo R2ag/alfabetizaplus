@@ -6,7 +6,10 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "resposta_usuario")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 public class RespostaUsuario {
