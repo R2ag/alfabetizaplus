@@ -1,6 +1,7 @@
 package br.com.alfabetizaplus.config;
 
 import br.com.alfabetizaplus.entity.Usuario;
+import br.com.alfabetizaplus.mapper.UsuarioMapper;
 import br.com.alfabetizaplus.service.UsuarioService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -20,9 +21,11 @@ import java.util.Collections;
 public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
 
     private final UsuarioService usuarioService;
+    private final UsuarioMapper usuarioMapper;
 
-    public FirebaseAuthenticationFilter(UsuarioService usuarioService) {
+    public FirebaseAuthenticationFilter(UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
         this.usuarioService = usuarioService;
+        this.usuarioMapper = usuarioMapper;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
                 String email = decoded.getEmail();
                 String nome = decoded.getName();
 
-                Usuario usuario = usuarioService.loadOrCreateByGoogleUid(uid, email, nome);
+                Usuario usuario = usuarioMapper.toEntity(usuarioService.loadOrCreateByGoogleUid(uid, email, nome));
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
