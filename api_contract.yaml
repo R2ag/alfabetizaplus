@@ -3,7 +3,9 @@ info:
   title: AlfabetizaPlus API
   version: "1.0.0"
   description: >-
-    Contrato da API AlfabetizaPlus com resumo dos recursos, modelos e rotas.
+    Contrato da API AlfabetizaPlus descrevendo os recursos expostos pelo backend
+    Spring Boot. Todas as rotas listadas abaixo estão prefixadas com `/api` no
+    ambiente de produção.
 servers:
   - url: https://{host}/api
     variables:
@@ -11,6 +13,19 @@ servers:
         default: api.alfabetizaplus.local
 security:
   - bearerAuth: []
+tags:
+  - name: Autenticação
+    description: Fluxo de registro e consulta do usuário autenticado via Firebase.
+  - name: Usuários
+    description: Recursos relacionados aos dados do usuário autenticado.
+  - name: Conteúdo pedagógico
+    description: Estrutura de unidades, aulas, atividades e práticas do aplicativo.
+  - name: Conquistas
+    description: Consulta de conquistas disponíveis e status para o usuário.
+  - name: Gamificação
+    description: Operações relacionadas a moedas, chaves e vidas do usuário.
+  - name: Respostas
+    description: Registro das respostas do usuário e impacto na gamificação.
 components:
   securitySchemes:
     bearerAuth:
@@ -22,15 +37,38 @@ components:
       name: Authorization
       in: header
       required: true
-      description: Token JWT (Firebase ID Token)
+      description: Token JWT (Firebase ID Token) no formato `Bearer <token>`.
+      schema:
+        type: string
+    GoogleUidQuery:
+      name: googleUid
+      in: query
+      required: true
+      description: Identificador único do usuário no Firebase.
       schema:
         type: string
   schemas:
-    Usuario:
+    UsuarioDTO:
       type: object
       properties:
         id:
           type: integer
+          format: int64
+        nome:
+          type: string
+        email:
+          type: string
+          format: email
+      required:
+        - id
+        - nome
+        - email
+    UsuarioDetalhe:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
         nome:
           type: string
         email:
@@ -49,11 +87,61 @@ components:
         - email
         - googleUid
         - dataCriacao
+    Gamificacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        moedas:
+          type: integer
+          minimum: 0
+        chaves:
+          type: integer
+          minimum: 0
+        vidas:
+          type: integer
+          minimum: 0
+      required:
+        - id
+        - moedas
+        - chaves
+        - vidas
+    GamificacaoDTO:
+      type: object
+      properties:
+        moedas:
+          type: integer
+          minimum: 0
+        chaves:
+          type: integer
+          minimum: 0
+        vidas:
+          type: integer
+          minimum: 0
+      required:
+        - moedas
+        - chaves
+        - vidas
+    ProgressoResumoDTO:
+      type: object
+      properties:
+        percentualConclusao:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+        completou:
+          type: boolean
+      required:
+        - percentualConclusao
+        - completou
     UnidadeDTO:
       type: object
       properties:
         id:
           type: integer
+          format: int64
         nome:
           type: string
         descricao:
@@ -62,80 +150,78 @@ components:
           type: string
           format: uri
         progressoUsuario:
-          $ref: '#/components/schemas/ProgressoUsuario'
-    ProgressoUsuario:
-      type: object
-      properties:
-        percentualConclusao:
-          type: number
-          format: float
-        completou:
-          type: boolean
+          $ref: '#/components/schemas/ProgressoResumoDTO'
+      required:
+        - id
+        - nome
+        - descricao
     AulaDTO:
       type: object
       properties:
         id:
           type: integer
+          format: int64
         nome:
           type: string
         descricao:
           type: string
-    Atividade:
+      required:
+        - id
+        - nome
+        - descricao
+    AtividadeDTO:
       type: object
       properties:
         id:
           type: integer
+          format: int64
         nome:
           type: string
         descricao:
           type: string
-        praticas:
-          type: array
-          items:
-            $ref: '#/components/schemas/Pratica'
-    Pratica:
+      required:
+        - id
+        - nome
+        - descricao
+    RespostaPossivelDTO:
       type: object
       properties:
         id:
           type: integer
+          format: int64
         descricao:
           type: string
         imagem:
           type: string
           format: uri
-        respostasPossiveis:
-          type: array
-          items:
-            $ref: '#/components/schemas/RespostaPossivel'
-    RespostaPossivel:
+      required:
+        - id
+        - descricao
+    PraticaDTO:
       type: object
       properties:
         id:
           type: integer
+          format: int64
         descricao:
           type: string
         imagem:
           type: string
           format: uri
-        correta:
-          type: boolean
-    Gamificacao:
-      type: object
-      properties:
-        moedas:
-          type: integer
-        chaves:
-          type: integer
-        vidas:
-          type: integer
-    GamificacaoDTO:
-      allOf:
-        - $ref: '#/components/schemas/Gamificacao'
+        respostas:
+          type: array
+          items:
+            $ref: '#/components/schemas/RespostaPossivelDTO'
+      required:
+        - id
+        - descricao
+        - respostas
     ConquistaDTO:
       type: object
       properties:
         id:
           type: integer
+          format: int64
         nome:
           type: string
         descricao:
@@ -145,203 +231,213 @@ components:
           format: uri
         conquistada:
           type: boolean
-    MensagemGamificacao:
-      type: object
-      properties:
-        mensagem:
-          type: string
-        gamificacao:
-          $ref: '#/components/schemas/GamificacaoDTO'
+      required:
+        - id
+        - nome
+        - descricao
+        - conquistada
 paths:
   /auth/register:
     post:
-      summary: Registrar usuário via token Firebase
       tags:
         - Autenticação
+      summary: Registrar ou carregar usuário autenticado
+      description: >-
+        Registra o usuário autenticado via Firebase caso ainda não exista e
+        retorna seus dados básicos.
       parameters:
         - $ref: '#/components/parameters/AuthHeader'
       responses:
         '200':
-          description: Usuário registrado ou carregado
+          description: Usuário registrado ou recuperado com sucesso.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usuario'
+                $ref: '#/components/schemas/UsuarioDTO'
+        '401':
+          description: Token inválido ou expirado.
   /auth/me:
     get:
-      summary: Buscar usuário autenticado
       tags:
         - Autenticação
+      summary: Buscar dados básicos do usuário autenticado
       parameters:
         - $ref: '#/components/parameters/AuthHeader'
       responses:
         '200':
-          description: Dados básicos do usuário
+          description: Dados básicos do usuário associado ao token informado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usuario'
+                $ref: '#/components/schemas/UsuarioDTO'
+        '401':
+          description: Token inválido ou expirado.
   /usuarios/me:
     get:
-      summary: Obter usuário logado com gamificação
       tags:
         - Usuários
-      parameters:
-        - $ref: '#/components/parameters/AuthHeader'
+      summary: Obter dados completos do usuário autenticado
+      security:
+        - bearerAuth: []
       responses:
         '200':
-          description: Usuário autenticado completo
+          description: Dados completos do usuário autenticado.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usuario'
+                $ref: '#/components/schemas/UsuarioDetalhe'
         '401':
-          description: Token ausente ou inválido
+          description: Usuário não autenticado ou token inválido.
   /unidades:
     get:
-      summary: Listar unidades com progresso
       tags:
         - Conteúdo pedagógico
+      summary: Listar unidades disponíveis
       parameters:
-        - $ref: '#/components/parameters/AuthHeader'
-        - name: googleUid
-          in: query
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/GoogleUidQuery'
       responses:
         '200':
-          description: Lista de unidades
+          description: Lista de unidades com progresso do usuário.
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/UnidadeDTO'
+        '404':
+          description: Usuário não encontrado.
   /unidades/{idUnidade}/aulas:
     get:
-      summary: Listar aulas de uma unidade
       tags:
         - Conteúdo pedagógico
+      summary: Listar aulas de uma unidade
       parameters:
-        - $ref: '#/components/parameters/AuthHeader'
         - name: idUnidade
           in: path
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         '200':
-          description: Aulas da unidade
+          description: Lista de aulas da unidade informada.
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/AulaDTO'
+        '404':
+          description: Unidade não encontrada.
   /aulas/{idAula}/atividades:
     get:
-      summary: Listar atividades de uma aula
       tags:
         - Conteúdo pedagógico
+      summary: Listar atividades de uma aula
       parameters:
-        - $ref: '#/components/parameters/AuthHeader'
         - name: idAula
           in: path
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         '200':
-          description: Atividades disponíveis
+          description: Lista de atividades da aula.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Atividade'
+                  $ref: '#/components/schemas/AtividadeDTO'
+        '404':
+          description: Aula não encontrada.
   /atividades/{idAtividade}/praticas:
     get:
-      summary: Listar práticas de uma atividade
       tags:
         - Conteúdo pedagógico
+      summary: Listar práticas de uma atividade
       parameters:
-        - $ref: '#/components/parameters/AuthHeader'
         - name: idAtividade
           in: path
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         '200':
-          description: Práticas da atividade
+          description: Práticas vinculadas à atividade informada.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pratica'
+                  $ref: '#/components/schemas/PraticaDTO'
+        '404':
+          description: Atividade não encontrada.
   /praticas/{idPratica}:
     get:
-      summary: Buscar detalhes de uma prática
       tags:
         - Conteúdo pedagógico
+      summary: Buscar detalhes de uma prática
       parameters:
-        - $ref: '#/components/parameters/AuthHeader'
         - name: idPratica
           in: path
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         '200':
-          description: Detalhes da prática
+          description: Detalhes da prática solicitada.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pratica'
+                $ref: '#/components/schemas/PraticaDTO'
+        '404':
+          description: Prática não encontrada.
   /conquistas:
     get:
-      summary: Listar conquistas do usuário
       tags:
         - Conquistas
+      summary: Listar conquistas do usuário
       parameters:
-        - $ref: '#/components/parameters/AuthHeader'
-        - name: googleUid
-          in: query
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/GoogleUidQuery'
       responses:
         '200':
-          description: Lista de conquistas com status
+          description: Lista de conquistas e o status do usuário informado.
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/ConquistaDTO'
+        '404':
+          description: Usuário não encontrado.
   /gamificacao/me:
     get:
-      summary: Obter gamificação do usuário autenticado
       tags:
         - Gamificação
-      parameters:
-        - $ref: '#/components/parameters/AuthHeader'
+      summary: Obter estado de gamificação do usuário autenticado
+      security:
+        - bearerAuth: []
       responses:
         '200':
-          description: Estado gamificado atual
+          description: Estado atual da gamificação.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GamificacaoDTO'
+        '401':
+          description: Usuário não autenticado ou token inválido.
   /gamificacao/add-moedas/{quantidade}:
     post:
-      summary: Adicionar moedas ao usuário autenticado
       tags:
         - Gamificação
+      summary: Adicionar moedas ao usuário autenticado
+      security:
+        - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/AuthHeader'
         - name: quantidade
           in: path
           required: true
@@ -350,46 +446,57 @@ paths:
             minimum: 1
       responses:
         '200':
-          description: Gamificação atualizada
+          description: Gamificação atualizada após adicionar moedas.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GamificacaoDTO'
+        '401':
+          description: Usuário não autenticado ou token inválido.
   /gamificacao/perder-vida:
     post:
-      summary: Remover uma vida do usuário autenticado
       tags:
         - Gamificação
-      parameters:
-        - $ref: '#/components/parameters/AuthHeader'
+      summary: Remover uma vida do usuário autenticado
+      security:
+        - bearerAuth: []
       responses:
         '200':
-          description: Resultado da operação
+          description: Gamificação atualizada após perder uma vida.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GamificacaoDTO'
+        '401':
+          description: Usuário não autenticado ou token inválido.
   /respostas/{idPratica}/responder:
     post:
-      summary: Responder prática com gamificação
       tags:
         - Respostas
+      summary: Registrar resposta do usuário a uma prática
+      security:
+        - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/AuthHeader'
         - name: idPratica
           in: path
           required: true
           schema:
             type: integer
+            format: int64
         - name: idResposta
           in: query
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         '200':
-          description: Mensagem e gamificação atualizada
+          description: Mensagem indicando o resultado da resposta.
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: '#/components/schemas/MensagemGamificacao'
+                type: string
+        '401':
+          description: Usuário não autenticado ou token inválido.
+        '404':
+          description: Prática ou resposta informada não encontrada.
