@@ -9,7 +9,6 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 public class RespostaUsuario {

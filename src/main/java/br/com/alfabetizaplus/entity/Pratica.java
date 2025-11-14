@@ -8,7 +8,6 @@ import java.util.List;
 @Table(name = "pratica")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pratica {

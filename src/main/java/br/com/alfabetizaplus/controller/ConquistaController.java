@@ -1,8 +1,10 @@
 package br.com.alfabetizaplus.controller;
 
 import br.com.alfabetizaplus.dto.ConquistaDTO;
+import br.com.alfabetizaplus.dto.UsuarioDTO;
 import br.com.alfabetizaplus.entity.Usuario;
 import br.com.alfabetizaplus.mapper.ConquistaMapper;
+import br.com.alfabetizaplus.mapper.UsuarioMapper;
 import br.com.alfabetizaplus.service.ConquistaService;
 import br.com.alfabetizaplus.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +24,14 @@ public class ConquistaController {
     private final ConquistaService conquistaService;
     private final ConquistaMapper conquistaMapper;
     private final UsuarioService usuarioService;
+    private final UsuarioMapper usuarioMapper;
 
     @GetMapping
     public List<ConquistaDTO> listarConquistas(@RequestParam String googleUid) {
-        Usuario usuario = usuarioService.findByGoogleUid(googleUid)
+        UsuarioDTO usuarioDTO = usuarioService.findByGoogleUid(googleUid)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        List<Long> idsConquistadas = conquistaService.listarConquistasDoUsuario(usuario)
+        List<Long> idsConquistadas = conquistaService.listarConquistasDoUsuario(usuarioMapper.toEntity(usuarioDTO))
                 .stream().map(c -> c.getConquista().getId())
                 .toList();
 
