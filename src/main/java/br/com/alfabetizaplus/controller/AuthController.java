@@ -1,39 +1,30 @@
 package br.com.alfabetizaplus.controller;
 
 import br.com.alfabetizaplus.dto.UsuarioDTO;
-import br.com.alfabetizaplus.service.UsuarioService;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseToken;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UsuarioService usuarioService;
-
-    public AuthController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
     @PostMapping("/register")
-    public UsuarioDTO registrarUsuario(@RequestHeader("Authorization") String authHeader) throws Exception {
-        String token = authHeader.replace("Bearer ", "");
-        FirebaseToken decoded = FirebaseAuth.getInstance().verifyIdToken(token);
+    public UsuarioDTO registrarUsuario(@AuthenticationPrincipal UsuarioDTO usuarioAutenticado) {
+        if (usuarioAutenticado == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token ausente ou inválido.");
+        }
 
-        return usuarioService.loadOrCreateByGoogleUid(
-                decoded.getUid(),
-                decoded.getEmail(),
-                decoded.getName()
-        );
+        return usuarioAutenticado;
     }
 
     @GetMapping("/me")
-    public UsuarioDTO getUsuarioAtual(@RequestHeader("Authorization") String authHeader) throws Exception {
-        String token = authHeader.replace("Bearer ", "");
-        FirebaseToken decoded = FirebaseAuth.getInstance().verifyIdToken(token);
+    public UsuarioDTO getUsuarioAtual(@AuthenticationPrincipal UsuarioDTO usuarioAutenticado) {
+        if (usuarioAutenticado == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário não autenticado.");
+        }
 
-        return usuarioService.findByGoogleUid(decoded.getUid())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        return usuarioAutenticado;
     }
 }
