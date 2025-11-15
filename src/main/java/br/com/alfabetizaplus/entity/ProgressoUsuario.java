@@ -37,6 +37,7 @@ public class ProgressoUsuario {
     @ToString.Exclude
     private Atividade atividade;
 
+    @Column(name = "concluida")
     private boolean concluida = false;
 
     @Column(name = "data_conclusao")
