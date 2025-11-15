@@ -27,4 +27,6 @@ public class RespostaPossivel {
     private String imagem;
 
     private Boolean correta = false;
+
+
 }

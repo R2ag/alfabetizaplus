@@ -32,4 +32,5 @@ public class Gamificacao {
 
     @ToString.Include
     private Integer vidas = 3;
+
 }

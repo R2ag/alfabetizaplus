@@ -28,4 +28,6 @@ public class Pratica {
 
     @OneToMany(mappedBy = "pratica", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RespostaPossivel> respostasPossiveis;
+
+
 }

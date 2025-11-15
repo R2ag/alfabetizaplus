@@ -37,4 +37,6 @@ public class Atividade {
     @OneToMany(mappedBy = "atividade", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Pratica> praticas;
+
+
 }

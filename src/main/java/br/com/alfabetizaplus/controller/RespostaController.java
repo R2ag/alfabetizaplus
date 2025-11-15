@@ -49,10 +49,10 @@ public class RespostaController {
 
         if (Boolean.TRUE.equals(resposta.getCorreta())) {
             gamificacaoService.adicionarMoedas(usuario, 10);
-            return "Resposta correta! +10 moedas 🎉";
+            return "Resposta correta!";
         } else {
             gamificacaoService.removerVida(usuario);
-            return "Resposta incorreta 😕 -1 vida";
+            return "Resposta incorreta!";
         }
     }
 }

@@ -32,4 +32,6 @@ public class RespostaUsuario {
 
     @Column(name = "data_resposta")
     private OffsetDateTime dataResposta = OffsetDateTime.now();
+
+
 }

@@ -30,4 +30,6 @@ public class Unidade {
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Aula> aulas;
+
+
 }

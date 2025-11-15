@@ -10,7 +10,7 @@ servers:
   - url: https://{host}/api
     variables:
       host:
-        default: api.alfabetizaplus.local
+        default: 191.253.23.111:8080
 security:
   - bearerAuth: []
 tags:

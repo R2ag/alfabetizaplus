@@ -44,4 +44,6 @@ public class ProgressoUsuario {
 
     @Column(name = "percentual_conclusao", nullable = false)
     private Double percentualConclusao = 0.0;
+
+
 }

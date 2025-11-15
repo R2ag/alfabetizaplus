@@ -43,4 +43,6 @@ public class Conquista {
     @ToString.Exclude
     private List<Aula> aulasNecessarias;
 
+
+
 }
