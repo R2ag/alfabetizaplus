@@ -1,27 +1,22 @@
 package br.com.alfabetizaplus.controller;
 
 
-import br.com.alfabetizaplus.entity.Usuario;
-import br.com.alfabetizaplus.service.UsuarioService;
-import org.springframework.security.core.Authentication;
+import br.com.alfabetizaplus.dto.UsuarioDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
-
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
     // Retorna os dados do usuário autenticado (Firebase)
     @GetMapping("/me")
-    public Usuario obterUsuarioLogado(Authentication authentication) {
-        if (authentication == null || !(authentication.getPrincipal() instanceof Usuario usuario)) {
-            throw new RuntimeException("Usuário não autenticado");
+    public UsuarioDTO obterUsuarioLogado(@AuthenticationPrincipal UsuarioDTO usuarioAutenticado) {
+        if (usuarioAutenticado == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário não autenticado");
         }
-        return usuario;
+        return usuarioAutenticado;
     }
 }
