@@ -92,7 +92,7 @@ CREATE TABLE progresso_usuario (
                                    id_unidade BIGINT,
                                    id_aula BIGINT,
                                    id_atividade BIGINT,
-                                   comcluida BOOLEAN NOT NULL DEFAULT false,
+                                   concluida BOOLEAN NOT NULL DEFAULT false,
                                    data_conclusao TIMESTAMP WITHOUT TIME ZONE,
                                    percentual_conclusao DOUBLE PRECISION NOT NULL DEFAULT 0,
                                    CONSTRAINT fk_pu_usuario FOREIGN KEY (id_usuario)
