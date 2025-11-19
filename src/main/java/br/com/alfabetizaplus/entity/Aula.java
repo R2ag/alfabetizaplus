@@ -28,6 +28,9 @@ public class Aula {
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
+    @Column(name = "video_aula_url", length = 500)
+    private String videoAulaUrl;
+
     @OneToMany(mappedBy = "aula", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Atividade> atividades;
