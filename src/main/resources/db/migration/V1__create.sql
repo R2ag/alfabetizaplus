@@ -45,7 +45,6 @@ CREATE TABLE atividade(
     id_aula                BIGINT       NOT NULL,
     nome                   VARCHAR(150) NOT NULL,
     descricao              TEXT,
-    video_apresentacao_url VARCHAR(500),
     video_instrucao_url    VARCHAR(500),
     CONSTRAINT fk_atividade_aula FOREIGN KEY (id_aula)
         REFERENCES aula (id_aula) ON DELETE CASCADE

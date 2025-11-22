@@ -19,9 +19,9 @@ VALUES ('Unidade 1 - Aprender a ouvir', 'Atividades de consciência fonológica 
 -- UNIDADE 1
 INSERT INTO aula (id_unidade, nome, descricao, video_aula_url)
 VALUES (1, 'Aula 1 - Reconhecer sons e sílabas', 'Desenvolver a percepção auditiva e identificação de sílabas.',
-        'http://191.253.23.111:8081/videos/video_teste.mp4'),
+        'Fm3gvxkIfrg'),
        (1, 'Aula 2 - Rimas e fonemas iniciais', 'Trabalhar palavras que rimam e distinguir sons iniciais e finais.',
-        'http://191.253.23.111:8081/videos/video_teste.mp4');
+        'Fm3gvxkIfrg');
 
 -- UNIDADE 2
 INSERT INTO aula (id_unidade, nome, descricao)
@@ -287,58 +287,59 @@ VALUES (20, 1),
        (20, 18);
 
 
-INSERT INTO atividade (id_aula, nome, descricao, video_apresentacao_url, video_instrucao_url)
+INSERT INTO atividade (id_aula, nome, descricao, video_instrucao_url)
 VALUES (1, 'Ouvir sons do ambiente',
-        'Atividade de identificação de sons comuns do cotidiano, como carro, cachorro, chuva e passos.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
+        'Atividade de identificação de sons comuns do cotidiano, como carro, cachorro, chuva e passos.'),
        (1, 'Bater palmas por sílabas',
-        'O aluno bate palmas de acordo com o número de sílabas das palavras ditas pelo instrutor.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
+        'O aluno bate palmas de acordo com o número de sílabas das palavras ditas pelo instrutor.'),
        (1, 'Separar palavras em sílabas',
-        'O aluno ouve uma palavra e seleciona visualmente a divisão silábica correta.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4');
+        'O aluno ouve uma palavra e seleciona visualmente a divisão silábica correta.');
+
+
+INSERT INTO atividade (id_aula, nome, descricao, video_instrucao_url)
+VALUES (2, 'Encontrar palavras que rimam', 'O aluno ouve duas palavras e identifica se elas rimam.', 'Fm3gvxkIfrg'),
+       (2, 'Som inicial das palavras', 'Identificação do fonema inicial a partir de imagens e sons.', 'Fm3gvxkIfrg'),
+       (2, 'Som final das palavras', 'Atividade que reforça sons finais semelhantes em palavras comuns.',
+        'Fm3gvxkIfrg');
 
 
 INSERT INTO atividade (id_aula, nome, descricao, video_apresentacao_url, video_instrucao_url)
-VALUES (2, 'Encontrar palavras que rimam', 'O aluno ouve duas palavras e identifica se elas rimam.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (2, 'Som inicial das palavras', 'Identificação do fonema inicial a partir de imagens e sons.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (2, 'Som final das palavras', 'Atividade que reforça sons finais semelhantes em palavras comuns.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4');
+VALUES (3, 'Aprender a vogal A', 'Reconhecimento auditivo e visual da vogal A, com exemplos práticos.', 'Fm3gvxkIfrg'),
+       (3, 'Aprender a vogal I', 'Apresentação e treino da vogal I com imagens e sons associados.', 'Fm3gvxkIfrg'),
+       (3, 'Completar palavras com A e I', 'O aluno completa palavras simples com as vogais corretas.', 'Fm3gvxkIfrg'),
+       (4, 'Aprender a letra F', 'Associação da letra F com imagens (fogo, faca, foca).', 'Fm3gvxkIfrg'),
+       (4, 'Aprender a letra M', 'Treino da letra M com exemplos do cotidiano (mesa, mala).', 'Fm3gvxkIfrg'),
+       (4, 'Formar sílabas FA, FE, FI, FO, FU', 'Construção de sílabas simples com F.', 'Fm3gvxkIfrg'),
+       (4, 'Formar sílabas MA, ME, MI, MO, MU', 'Construção de sílabas com M.', 'Fm3gvxkIfrg'),
+
+       (5, 'Aprender a vogal U', 'Identificação e prática auditiva da vogal U.', 'Fm3gvxkIfrg'),
+       (5, 'Aprender a consoante L', 'Treino da letra L e suas combinações.', 'Fm3gvxkIfrg'),
+       (5, 'Palavras com L', 'Montagem de palavras simples como LATA, LAMA, LUPA.', 'Fm3gvxkIfrg'),
+       (6, 'Aprender a vogal O', 'Exemplos sonoros e visuais da vogal O.', 'Fm3gvxkIfrg'),
+       (6, 'Aprender as letras V e N', 'Identificação das consoantes e seus sons.', 'Fm3gvxkIfrg'),
+       (6, 'Montar palavras simples', 'Montagem de palavras com O, V, E, N.', 'Fm3gvxkIfrg'),
+       (7, 'Aprender letra P', 'Associação da letra P com sons e imagens.', 'Fm3gvxkIfrg'),
+       (7, 'Aprender letra S', 'Identificação da letra S no início e final de palavras.', 'Fm3gvxkIfrg'),
+       (7, 'Formar sílabas com P e S', 'PA, PE, PI, PO, PU; SA, SE, SI, SO, SU.', 'Fm3gvxkIfrg'),
+       (8, 'Som Ô e som Ó', 'Diferenciação auditiva entre sons abertos e fechados.', 'Fm3gvxkIfrg'),
+       (8, 'Som Ê e som É', 'Comparação de sílabas com variação vocálica.', 'Fm3gvxkIfrg'),
+       (9, 'Aprender novas letras', 'Apresentação das letras T, Z, R, D, J e B.', 'Fm3gvxkIfrg'),
+       (9, 'Formação de palavras', 'Montar palavras usando as novas consoantes.', 'Fm3gvxkIfrg');
+
+INSERT INTO pratica (id_atividade, descricao, imagem_url)
+VALUES (1, 'Ouça o som e escolha a imagem correspondente: cachorro latindo.', '/img/praticas/cachorro.png');
 
 
-INSERT INTO atividade (id_aula, nome, descricao, video_apresentacao_url, video_instrucao_url)
-VALUES (3, 'Aprender a vogal A', 'Reconhecimento auditivo e visual da vogal A, com exemplos práticos.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (3, 'Aprender a vogal I', 'Apresentação e treino da vogal I com imagens e sons associados.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (3, 'Completar palavras com A e I', 'O aluno completa palavras simples com as vogais corretas.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (4, 'Aprender a letra F', 'Associação da letra F com imagens (fogo, faca, foca).', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (4, 'Aprender a letra M', 'Treino da letra M com exemplos do cotidiano (mesa, mala).', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (4, 'Formar sílabas FA, FE, FI, FO, FU', 'Construção de sílabas simples com F.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (4, 'Formar sílabas MA, ME, MI, MO, MU', 'Construção de sílabas com M.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-
-       (5, 'Aprender a vogal U', 'Identificação e prática auditiva da vogal U.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (5, 'Aprender a consoante L', 'Treino da letra L e suas combinações.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (5, 'Palavras com L', 'Montagem de palavras simples como LATA, LAMA, LUPA.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (6, 'Aprender a vogal O', 'Exemplos sonoros e visuais da vogal O.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (6, 'Aprender as letras V e N', 'Identificação das consoantes e seus sons.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (6, 'Montar palavras simples', 'Montagem de palavras com O, V, E, N.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (7, 'Aprender letra P', 'Associação da letra P com sons e imagens.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (7, 'Aprender letra S', 'Identificação da letra S no início e final de palavras.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (7, 'Formar sílabas com P e S', 'PA, PE, PI, PO, PU; SA, SE, SI, SO, SU.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (8, 'Som Ô e som Ó', 'Diferenciação auditiva entre sons abertos e fechados.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (8, 'Som Ê e som É', 'Comparação de sílabas com variação vocálica.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (9, 'Aprender novas letras', 'Apresentação das letras T, Z, R, D, J e B.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4'),
-       (9, 'Formação de palavras', 'Montar palavras usando as novas consoantes.', 'http://191.253.23.111:8081/videos/video_teste.mp4', 'http://191.253.23.111:8081/videos/video_teste.mp4');
-
-INSERT INTO pratica (id_atividade, descricao, imagem_url) VALUES
-    (1, 'Ouça o som e escolha a imagem correspondente: cachorro latindo.', '/img/praticas/cachorro.png');
+INSERT INTO resposta_possivel (id_pratica, descricao, imagem_url, correta)
+VALUES (1, 'Cachorro', '/img/respostas/cachorro.png', true),
+       (1, 'Carro', '/img/respostas/carro.png', false),
+       (1, 'Chuva', '/img/respostas/chuva.png', false);
 
 
-INSERT INTO resposta_possivel (id_pratica, descricao, imagem_url, correta) VALUES
-                                                                               (1, 'Cachorro', '/img/respostas/cachorro.png', true),
-                                                                               (1, 'Carro', '/img/respostas/carro.png', false),
-                                                                               (1, 'Chuva', '/img/respostas/chuva.png', false);
+INSERT INTO pratica (id_atividade, descricao, imagem_url)
+VALUES (1, 'Ouça o som e escolha a imagem correspondente: som de chuva.', '/img/praticas/chuva.png');
 
-
-INSERT INTO pratica (id_atividade, descricao, imagem_url) VALUES
-    (1, 'Ouça o som e escolha a imagem correspondente: som de chuva.', '/img/praticas/chuva.png');
-
-INSERT INTO resposta_possivel (id_pratica, descricao, imagem_url, correta) VALUES
-                                                                               (2, 'Chuva', '/img/respostas/chuva.png', true),
-                                                                               (2, 'Carro', '/img/respostas/carro.png', false),
-                                                                               (2, 'Cachorro', '/img/respostas/cachorro.png', false);
+INSERT INTO resposta_possivel (id_pratica, descricao, imagem_url, correta)
+VALUES (2, 'Chuva', '/img/respostas/chuva.png', true),
+       (2, 'Carro', '/img/respostas/carro.png', false),
+       (2, 'Cachorro', '/img/respostas/cachorro.png', false);

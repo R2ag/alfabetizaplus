@@ -9,6 +9,5 @@ public class AtividadeDTO {
     private Long id;
     private String nome;
     private String descricao;
-    private String videoApresentacaoUrl;
     private  String videoInstrucaoUrl;
 }

@@ -28,9 +28,6 @@ public class Atividade {
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
-    @Column(name = "video_apresentacao_url", length = 500)
-    private String videoApresentacaoUrl;
-
     @Column(name = "video_instrucao_url", length = 500)
     private  String videoInstrucaoUrl;
 
