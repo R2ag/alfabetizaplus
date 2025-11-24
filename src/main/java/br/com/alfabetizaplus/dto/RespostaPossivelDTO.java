@@ -7,6 +7,6 @@ import lombok.Data;
 public class RespostaPossivelDTO {
     private Long id;
     private String descricao;
-    private String imagem;
+    private String imagemUrl;
     private boolean correta;
 }

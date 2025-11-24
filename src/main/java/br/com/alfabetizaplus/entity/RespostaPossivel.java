@@ -24,7 +24,9 @@ public class RespostaPossivel {
     @Column(nullable = false)
     private String descricao;
 
-    private String imagem;
+    @Column(name = "imagem_url")
+    private String imagemUrl;
+
 
     private Boolean correta = false;
 
