@@ -7,6 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {RespostaPossivelMapper.class})
 public interface PraticaMapper {
-    @Mapping(target = "respostas", source = "respostas")
+    @Mapping(target = "respostasPossiveis", source = "respostasPossiveis")
     PraticaDTO toDTO(Pratica pratica);
 }

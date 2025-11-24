@@ -8,5 +8,5 @@ public class PraticaDTO {
     private Long id;
     private String descricao;
     private String imagemUrl;
-    private List<RespostaPossivelDTO> respostas;
+    private List<RespostaPossivelDTO> respostasPossiveis;
 }
