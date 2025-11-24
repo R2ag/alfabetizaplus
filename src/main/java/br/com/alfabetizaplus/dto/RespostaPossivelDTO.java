@@ -8,4 +8,5 @@ public class RespostaPossivelDTO {
     private Long id;
     private String descricao;
     private String imagem;
+    private boolean correta;
 }
