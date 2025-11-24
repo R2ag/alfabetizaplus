@@ -1,7 +1,9 @@
 package br.com.alfabetizaplus.controller;
 
 
+import br.com.alfabetizaplus.dto.UsuarioDTO;
 import br.com.alfabetizaplus.entity.*;
+import br.com.alfabetizaplus.mapper.UsuarioMapper;
 import br.com.alfabetizaplus.repository.*;
 import br.com.alfabetizaplus.service.GamificacaoService;
 import org.springframework.security.core.Authentication;
@@ -16,15 +18,17 @@ public class RespostaController {
     private final RespostaUsuarioRepository respostaUsuarioRepository;
     private final PraticaRepository praticaRepository;
     private final GamificacaoService gamificacaoService;
+    private final UsuarioMapper usuarioMapper;
 
     public RespostaController(RespostaPossivelRepository respostaPossivelRepository,
                               RespostaUsuarioRepository respostaUsuarioRepository,
                               PraticaRepository praticaRepository,
-                              GamificacaoService gamificacaoService) {
+                              GamificacaoService gamificacaoService, UsuarioMapper usuarioMapper) {
         this.respostaPossivelRepository = respostaPossivelRepository;
         this.respostaUsuarioRepository = respostaUsuarioRepository;
         this.praticaRepository = praticaRepository;
         this.gamificacaoService = gamificacaoService;
+        this.usuarioMapper = usuarioMapper;
     }
 
     @PostMapping("/{idPratica}/responder")
@@ -32,7 +36,8 @@ public class RespostaController {
                                    @RequestParam Long idResposta,
                                    Authentication authentication) {
 
-        Usuario usuario = (Usuario) authentication.getPrincipal();
+        UsuarioDTO usuarioDTO = (UsuarioDTO) authentication.getPrincipal();
+        Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
 
         Pratica pratica = praticaRepository.findById(idPratica)
                 .orElseThrow(() -> new RuntimeException("Prática não encontrada"));
