@@ -24,7 +24,8 @@ public class Pratica {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
-    private String imagem;
+    @Column(name = "imagem_url")
+    private String imagemUrl;
 
     @OneToMany(mappedBy = "pratica", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RespostaPossivel> respostasPossiveis;

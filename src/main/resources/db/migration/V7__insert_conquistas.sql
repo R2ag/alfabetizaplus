@@ -55,7 +55,7 @@ VALUES
 
     ('Desbravador das Inconsistências',
      'Reconheceu e leu palavras com letras de som variável (como o X e o Z em posições diferentes).',
-     'http://191.253.23.111:8081/conquistas/desbravador_inconsistencias.png',
+     'http://191.253.23.111:8081/conquistas/desbravador_das_inconsistencias.png',
      75),
 
     ('Leitor Fluente',
@@ -75,12 +75,12 @@ VALUES
 
     ('Conquistador das Palavras Frequentes',
      'Leu com rapidez e segurança as palavras mais usadas do português.',
-     'http://191.253.23.111:8081/conquistas/conquistador_palavras_frequentes.png',
+     'http://191.253.23.111:8081/conquistas/conquistador_das_palavras.png',
      75),
 
     ('Campeão da Escrita Certa',
      'Escreveu corretamente todas as estruturas ortográficas estudadas.',
-     'http://191.253.23.111:8081/conquistas/campeao_escrita_certa.png',
+     'http://191.253.23.111:8081/conquistas/campeao_da_escrita_certa.png',
      75),
 
     ('Super Auditivo',
@@ -95,7 +95,7 @@ VALUES
 
     ('Especialista em Leitura e Escrita',
      'Lê e escreve palavras com estrutura complexa (CVC, CCV, dígrafos e nasais).',
-     'http://191.253.23.111:8081/conquistas/especialista_leitura_escrita.png',
+     'http://191.253.23.111:8081/conquistas/eespecialista_em_leitura_e_escrita.png',
      100),
 
     ('Nenhum Brasileiro para Trás!',

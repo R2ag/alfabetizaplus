@@ -7,6 +7,6 @@ import java.util.List;
 public class PraticaDTO {
     private Long id;
     private String descricao;
-    private String imagem;
+    private String imagemUrl;
     private List<RespostaPossivelDTO> respostas;
 }
